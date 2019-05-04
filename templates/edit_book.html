@@ -1,0 +1,37 @@
+{% extends "skeleton.html" %}
+{% block content %}
+
+    <div class="container">
+        <div class="titleView">
+                <h1>{{titleView}}</h1>
+        </div>
+        <form method="POST" action="editBook?id={{ book.key.id() }}">
+            <div class="form-group">
+                <label for="isbn">Titulo</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{book.title}}" placeholder="Titulo">
+            </div>
+            <div class="form-group">
+                <label for="isbn">ISBN</label>
+                <input type="text" class="form-control" id="isbn" name="isbn" value="{{book.isbn}}" aria-describedby="isbnHelp" placeholder="ISBN">
+                <small id="isbnHelp" class="form-text text-muted">Introduce un numero de ISBN valido.</small>
+            </div>
+            <div class="form-group">
+                <label for="autor">Autor</label>
+                <input type="text" class="form-control" id="author" name="author"  placeholder="Autor" value="{{ book.author }}">
+            </div>
+            <div class="form-group">
+                <label for="avaliable">Numero de ejemplares</label>
+                <input type="text" class="form-control" id="avaliable" name="avaliable" placeholder="n ejemplares" value="{{ book.avaliable }}">
+                <small id="avaliableHelp" class="form-text text-muted">Introduce un numero de ejemplares para ese libro.</small>
+            </div>
+            <div class="form-group">
+                <label for="type">Tipo</label>
+                <input type="text" class="form-control" id="type" name="type" placeholder="type" value="{{ book.type }}">
+                <small id="typeHelp" class="form-text text-muted">Version fisica, ebook o audiolibro</small>
+            </div>
+             <button type="submit" class="btn btn-primary">Editar</button>
+        </form>
+        <a href="/seeBooks">Volver</a>
+    </div>
+
+{%  endblock %}

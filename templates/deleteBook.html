@@ -1,0 +1,32 @@
+{% extends "skeleton.html" %}
+{% block content %}
+
+    <div class="container">
+        <div class="titleView">
+                <h1>{{titleView}}</h1>
+        </div>
+    <div>
+        <table class="table table-detail">
+            <thead>
+                <tr>
+                    <th>ISBN</th>
+                    <th>Autor</th>
+                    <th>Numero Ejemplares</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                 <tr>
+                    <td> {{ book.isbn }}</td>
+                    <td> {{ book.author }}</td>
+                    <td> {{ book.avaliable }}</td>
+                    <td> {{ book.type }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <form action="/deleteBook?idem={{ book.key.id() }}" method="post">
+             <button type="submit" class="btn btn-primary">Borrar</button>
+        </form>
+        <a href="/seeBooks">Volver</a>
+    </div>
+{%  endblock %}

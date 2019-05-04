@@ -1,0 +1,64 @@
+{% extends "skeleton.html" %}
+{% block content %}
+
+    <div class="container">
+        <div class="titleView">
+                <h1>{{titleView}}</h1>
+        </div>
+         <a href="/addBooks">Añadir</a> <a href="/myReserves">Mis reservas</a>
+        <div class="table">
+            <table id="dataTable" class="dataTable">
+            <thead>
+                <tr>
+                    <th>
+                        Titulo
+                    </th>
+                    <th>
+                        ISBN
+                    </th>
+                    <th>
+                        Autor
+                    </th>
+                    <th>
+                        Numero de copias
+                    </th>
+                    <th>
+                        Formato
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>
+                            {{ book.title }}
+                        </td>
+                        <td>
+                            {{ book.isbn }}
+                        </td>
+                        <td>
+                            {{ book.author }}
+                        </td>
+                        <td>
+                            {{ book.avaliable }}
+                        </td>
+                        <td>
+                            {{ book.type }}
+                        </td>
+                        <td>
+                            <a href="/deleteBook?id={{ book.key.id() }}">Borrar</a>
+                            <a href="/editBook?id={{ book.key.id() }}">Editar</a>
+                            <a href="/showBook?id={{ book.key.id() }}">Ver</a>
+                            <a href="/reserveBook?id={{ book.key.id() }}">Reservar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+{%  endblock %}

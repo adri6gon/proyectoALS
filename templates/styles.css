@@ -1,0 +1,25 @@
+.body {
+    background-color: white;
+    font-family:Courier New ;
+    font-size: 10pt
+}
+.container{
+    text-align: center !important;
+}
+.table{
+    margin-left: 15%;
+}
+.table-reserves{
+    margin-left: 25%;
+}
+.table-detail{
+    margin-left: 0%;
+}
+#dvHeader{
+    min-height: 80px;
+    background-color: lightblue;
+}
+.title{
+    padding:1%;
+    font-family: "Courier New", monospace;
+}

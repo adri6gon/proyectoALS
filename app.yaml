@@ -1,0 +1,60 @@
+application: proyecto-als-gonzalez-fernandez-adrian
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: res/favicon.ico
+  upload: favicon\.ico
+
+- url: /templates
+  static_dir: templates
+  application_readable: true
+
+- url: /res
+  static_dir: res
+
+- url: /seeBooks
+  script: handlers.seeBooks.app
+  login: required
+
+- url: /addBooks
+  script: handlers.addBooks.app
+  login: required
+
+- url: /editBook
+  script: handlers.editBook.app
+  login: required
+
+- url: /showBook
+  script: handlers.showBook.app
+  login: required
+
+- url: /deleteBook
+  script: handlers.deleteBook.app
+  login: required
+
+- url: /reserveBook
+  script: handlers.reserveBook.app
+  login: required
+
+- url: /myReserves
+  script: handlers.myReserves.app
+  login: required
+
+- url: /returnBook
+  script: handlers.returnBook.app
+  login: required
+
+- url: /
+  script: handlers.welcome.app
+
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: jinja2
+  version: latest
+

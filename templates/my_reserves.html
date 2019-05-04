@@ -1,0 +1,49 @@
+{% extends "skeleton.html" %}
+{% block content %}
+
+    <div class="container">
+        <div class="titleView">
+                <h1>{{titleView}}</h1>
+        </div>
+        <div class="table table-reserves">
+            <table id="dataTable" class="dataTable">
+            <thead>
+                <tr>
+                    {% for title in listTitle %}
+                         <th>
+                             {{ title }}
+                         </th>
+                    {% endfor %}
+                        <th>
+                            Acciones
+                        </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>
+                            {{ book.title }}
+                        </td>
+                        <td>
+                            {{ book.isbn }}
+                        </td>
+                        <td>
+                            {{ book.author }}
+                        </td>
+                        <td>
+                            {{ book.type }}
+                        </td>
+                        <td>
+                            <a href="/returnBook?isbn={{ book.isbn }}">Devolver</a>
+                            <a href="/showBook?id={{ book.key.id() }}">Ver</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    <a href="/seeBooks">Volver</a>
+    </div>
+
+{%  endblock %}

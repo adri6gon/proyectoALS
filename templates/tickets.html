@@ -1,0 +1,161 @@
+{% extends "skeleton.html" %}
+{% block content %}
+<script type="text/javascript">
+    function reloadToApplyFilters(pageNumber)
+    {
+        const cbShowAll = document.getElementById( "cbShowAll" );
+        const edSearch = document.getElementById( "edSearch" );
+        var url = "/manage_tickets?";
+        var search_terms = edSearch.value.trim().toLowerCase();
+
+        // Page number
+        if ( pageNumber != null
+          && pageNumber > 0 )
+        {
+            url += "page=" + pageNumber + '&'
+        }
+
+        // Show all
+        if ( cbShowAll.checked ) {
+            url += "show_all=true&";
+        }
+
+        // Search terms
+        if ( edSearch.value.length > 0 ) {
+            url += "search=" + search_terms;
+        }
+
+        // Reload
+        window.location = url;
+    }
+
+    function resetSearch()
+    {
+        const edSearch = document.getElementById( "edSearch" );
+
+        edSearch.value = "";
+        reloadToApplyFilters();
+    }
+
+    window.onload = function() {
+        const cbShowAll = document.getElementById( "cbShowAll" );
+        const edSearch = document.getElementById( "edSearch" );
+
+        cbShowAll.checked = '{{ '1' if show_all else '0' }}' === '1';
+        edSearch.value = "{{ search_terms }}";
+        edSearch.onkeyup = function (ev) {
+            if ( ev.key === "Enter" ) {
+                reloadToApplyFilters();
+            }
+        }
+    }
+</script>
+
+<div id="dvInnerContents">
+    <div id="dvSpecificActions" class="clsMenu">
+        {% if usr_info.is_admin() %}
+        <a href="/manage_users">
+            <img height="24px" width="24px" title="users management"
+                 class="styled-button" src="/res/user.svg"/>
+        </a>
+        <br/>
+        <a href="/report">
+            <img height="24px" width="24px" title="send status report by e.mail"
+                 class="styled-button" src="/res/email.svg"/>
+        </a>
+        <br/>
+        {% endif %}
+        <a href="/tickets/add">
+            <img height="24px" width="24px" title="new ticket"
+                 class="styled-button" src="/res/add.svg"/>
+        </a>
+        <br/>
+        <a href="/tickets/toner">
+            <img height="24px" width="24px" title="new toner ticket"
+                 class="styled-button" src="/res/add_toner.svg"/>
+        </a>
+        <br/>
+        {% if usr_info.is_admin() %}
+        <a href="/tickets/toner_report">
+            <img height="24px" width="24px" title="toner tickets report"
+                 class="styled-button" src="/res/report_toner.svg"/>
+        </a>
+        <br/>
+        {%  endif %}
+    </div>
+    <div id="dvTitle">
+        <img height="32px" width="32px" title="tickets" src="/res/ticket.svg"/>
+        <b>Tickets</b>
+    </div>
+    <div id="dvBody">
+        <div id="dvCfg">
+            <input id="edSearch" type="text" placeholder="search" />
+            <a href="javascript: reloadToApplyFilters()">
+                <img width="16px" height="16px" title="search"
+                     class="styled-button" src="/res/search.svg"/>
+            </a>
+            <a href="javascript: resetSearch()">
+                <img width="16px" height="16px" title="reset"
+                     class="styled-button" src="/res/reset.svg"/>
+            </a>
+            <input id="cbShowAll"
+                   type="checkbox"
+                   onchange="javascript: reloadToApplyFilters()"/>
+             <label for="cbShowAll">Show also closed tickets.</label>
+        </div>
+
+        <p><table id="tblEntries">
+        {% for ticket in tickets %}
+            <tr class="tblEntryRow">
+            <td>
+            {% if usr_info.is_admin() %}
+                <a href="/tickets/modify?ticket_id={{ticket.key.urlsafe()}}">
+                    <img width="16px" height="16px" title="modify"
+                         class="styled-button" src="/res/modify.svg"/>
+                </a>
+                <a href="/tickets/delete?ticket_id={{ticket.key.urlsafe()}}">
+                    <img width="16px" height="16px" title="delete"
+                         class="styled-button" src="/res/delete.svg"/>
+                </a>
+            {%  endif %}
+            </td>
+            {% include "ticket_description.html" %}
+            </tr>
+        {% else %}
+            No tickets.
+        {% endfor %}
+        </table></p>
+        <div id="dvPages">
+            {% if pages_info.last > 0 %}
+                <p align="center">
+                <a href="#" onclick="javascript: reloadToApplyFilters( 0 )">
+                    <img height="16px" width="16px" title="first page"
+                         class="styled-button" src="/res/go_first.svg"/></a>
+
+                <a href="#" onclick="javascript: reloadToApplyFilters({{ pages_info.previous }})">
+                    <img height="16px" width="16px" title="previous page"
+                         class="styled-button" src="/res/go_previous.svg"/></a>
+
+                {% for page in pages_info.relevant %}
+                    {% if page == pages_info.current %}
+                        {{ page + 1 }}
+                    {% else %}
+                        <a class="styled-button"
+                           href="#"
+                           onclick="javascript: reloadToApplyFilters({{ page }})">&nbsp;{{ page + 1 }}&nbsp;</a>
+                    {% endif %}
+                {% endfor %}
+
+                <a href="#" onclick="javascript: reloadToApplyFilters({{ pages_info.next }})">
+                    <img height="16px" width="16px" title="next page"
+                         class="styled-button" src="/res/go_next.svg"/></a>
+
+                <a href="#" onclick="javascript: reloadToApplyFilters({{ pages_info.last }})">
+                    <img height="16px" width="16px" title="last page"
+                         class="styled-button" src="/res/go_last.svg"/></a>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
